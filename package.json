@@ -1,15 +1,20 @@
 {
   "name": "b-paginator-table",
   "version": "0.1.0",
+  "description": "A paginator table for BootstrapVue with AJAX fetch and server side pagination options.",
   "private": true,
+  "main": "dist/b-paginator-table.umd.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve src/b-paginator-table.vue",
+    "build": "vue-cli-service build --target lib --name b-paginator-table 'src/index.js'",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "bootstrap-vue": "^2.8.0",
+    "axios": "^0.18.1",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -36,7 +41,7 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions",
+    "last 5 versions",
     "not dead"
   ]
 }
