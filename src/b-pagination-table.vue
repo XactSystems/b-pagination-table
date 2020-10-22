@@ -15,10 +15,11 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table ref="table" v-bind="$attrs" :items="tableItems"
+                <b-table ref="table" v-bind="$attrs" :items="tableItems" :id="tableId"
                     :per-page="itemsPerPage" :current-page="tableCurrentPage"
                     sort-by.sync="tableSortBy" sort-desc.sync="tableSortDesc"
-                    :filter="tableFilter" @filtered="onTableFilter" v-on="$listeners">
+                    :filter="tableFilter" @filtered="onTableFilter" v-on="$listeners"
+                    :aria-label="ariaLabel">
                     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
@@ -32,7 +33,15 @@
             </b-col>
             <b-col cols="6" class="mt-0">
                 <div class="float-right">
-                    <b-pagination ref="pagination" size="sm" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" aria-controls="ccd-table" v-on="$listeners">
+                    <b-pagination ref="pagination" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" v-on="$listeners"
+                    :limit="limit" :align="align" :pills="pills" :hide-goto-end-buttons="hideGotoEndButtons"
+                    :label-first-page="labelFirstPage" :first-text="firstText" :first-number="firstNumber" :first-class="firstClass"
+                    :label-prev-page="labelPrevPage" :prev-text="prevText" :prev-class="prevClass"
+                    :label-next-page="labelNextPage" :next-text="nextText" :next-class="nextClass"
+                    :label-last-page="labelLastPage" :last-text="lastText" :last-number="lastNumber" :last-class="lastClass"
+                    :label-page="labelPage" :page-class="pageClass"
+                    :hide-ellipsis="hideEllipsis" :ellipsis-text="ellipsisText" :ellipsis-class="ellipsisClass"
+                    :size="paginationSize" :aria-label="paginationAriaLabel" :aria-controls="tableId">
                         <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                             <slot :name="name" v-bind="data"></slot>
                         </template>
@@ -66,6 +75,33 @@ export default {
         searchDebounce: { type: Number, required: false, default: 150 },
         ssp: { type: Boolean, required: false, default: false },
         state: { type: Boolean, required: false, default: false },
+        ariaLabel: { type: String, required: false, default: 'Pagination Table' },
+        // Pagination props
+        limit: [String, Number],
+        align: { type: String, required: false, default: 'left' },
+        pills: { type: Boolean, required: false, default: false },
+        hideGotoEndButtons: { type: Boolean, required: false, default: false },
+        labelFirstPage: { type: String, required: false, default: 'Go to first page' },
+        firstText: { type: String, required: false, default: '«' },
+        firstNumber: { type: Boolean, required: false, default: false },
+        firstClass: [String, Array, Object],
+        labelPrevPage: { type: String, required: false, default: 'Go to previous page' },
+        prevText: { type: String, required: false, default: '‹' },
+        prevClass: [String, Array, Object],
+        labelNextPage: { type: String, required: false, default: 'Go to next page' },
+        nextText: { type: String, required: false, default: '›' },
+        nextClass: [String, Array, Object],
+        labelLastPage: { type: String, required: false, default: 'Go to last page' },
+        lastText: { type: String, required: false, default: '»' },
+        lastNumber: { type: Boolean, required: false, default: false },
+        lastClass: [String, Array, Object],
+        labelPage: { type: String, required: false, default: 'Go to page' },
+        pageClass: [String, Array, Object],
+        hideEllipsis: { type: Boolean, required: false, default: false },
+        ellipsisText: { type: String, required: false, default: '…' },
+        ellipsisClass: [String, Array, Object],
+        paginationSize: String,
+        paginationAriaLabel: { type: String, required: false, default: 'Pagination' },
     },
 
     data() {
@@ -106,6 +142,10 @@ export default {
 
         stateName() {
             return `b-pagination-table_${this._uid }_${window.location.pathname}`;
+        },
+
+        tableId() {
+            return `b-pagination-table-${this._uid }`;
         }
     },
 
