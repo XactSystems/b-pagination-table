@@ -16,7 +16,7 @@
         <b-row>
             <b-col>
                 <b-table ref="table" v-bind="$attrs" :items="tableItems"
-                    :per-page="perPage" :current-page="tableCurrentPage"
+                    :per-page="itemsPerPage" :current-page="tableCurrentPage"
                     sort-by.sync="tableSortBy" sort-desc.sync="tableSortDesc"
                     :filter="tableFilter" @filtered="onTableFilter" v-on="$listeners">
                     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
@@ -25,14 +25,14 @@
                 </b-table>
             </b-col>
         </b-row>
-        <b-row v-if="paginator" class="mt-2">
+        <b-row v-if="pagination" class="mt-2">
             <b-col cols="6">
                 <div v-if="rowCount != filteredCount" class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ filteredCount }} filtered entries from {{ rowCount }}</div>
                 <div v-else class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ rowCount }} entries</div>
             </b-col>
             <b-col cols="6" class="mt-0">
                 <div class="float-right">
-                    <b-pagination size="sm" v-model="currentPage" :total-rows="filteredCount" :per-page="perPage" aria-controls="ccd-table" v-on="$listeners">
+                    <b-pagination ref="pagination" size="sm" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" aria-controls="ccd-table" v-on="$listeners">
                         <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                             <slot :name="name" v-bind="data"></slot>
                         </template>
@@ -56,7 +56,7 @@ export default {
         dataUrl: String,
         items: { type: Array, required: false, default: () => [] },
         perPage: { type: Number, required: false, default: 20 },
-        paginator: { type: Boolean, required: false, default: true },
+        pagination: { type: Boolean, required: false, default: true },
         pageLength: { type: Boolean, required: false, default: false },
         pageLengthOptions: { type: Array, required: false, default: () => [ 10, 20, 50, 75, 100 ] },
         search: { type: Boolean, required: false, default: false },
@@ -89,13 +89,13 @@ export default {
         },
 
         firstPageRow() {
-            return this.filteredCount > 0 ? ((this.currentPage - 1) * this.perPage) + 1 : 0;
+            return this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0;
         },
 
         lastPageRow() {
             return this.filteredCount > 0 ? (
-                this.firstPageRow + (this.perPage < this.filteredCount ? (
-                    this.filteredCount - this.firstPageRow > this.perPage ? this.perPage : this.filteredCount - this.firstPageRow + 1
+                this.firstPageRow + (this.itemsPerPage < this.filteredCount ? (
+                    this.filteredCount - this.firstPageRow > this.itemsPerPage ? this.itemsPerPage : this.filteredCount - this.firstPageRow + 1
                  ) : this.filteredCount) - 1
             ) : 0;
         },
@@ -105,7 +105,7 @@ export default {
         },
 
         stateName() {
-            return `b-paginator-table::${this._uid }::${window.location.host}/${window.location.pathname}`;
+            return `b-pagination-table_${this._uid }_${window.location.pathname}`;
         }
     },
 
@@ -184,9 +184,12 @@ export default {
             if (tableState) {
                 this.tableSortBy = tableState.tableSortBy || this.tableSortBy;
                 this.tableSortDesc = tableState.tableSortDesc || this.tableSortDesc;
-                this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
-                this.currentPage = tableState.currentPage || this.currentPage;
                 this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
+                this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
+                this.filteredCount = tableState.filteredCount || this.filteredCount;
+                this.$nextTick(function() {
+                    this.currentPage = tableState.currentPage || this.currentPage;
+                });
             }
         }
     },
@@ -204,9 +207,10 @@ export default {
                 let tableState = {
                     tableSortBy: this.tableSortBy,
                     tableSortDesc: this.tableSortDesc,
-                    itemsPerPage: this.itemsPerPage,
-                    currentPage: this.currentPage,
                     rawSearchText: this.rawSearchText,
+                    itemsPerPage: this.itemsPerPage,
+                    filteredCount: this.filteredCount,
+                    currentPage: this.currentPage,
                 };
                 localStorage.setItem(this.stateName, JSON.stringify(tableState));
             }

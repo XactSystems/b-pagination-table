@@ -1,11 +1,11 @@
 // Import vue component
-import component from './b-paginator-table.vue';
+import component from './b-pagination-table.vue';
 
 // Declare install function executed by Vue.use()
 export function install(Vue) {
 	if (install.installed) return;
 	install.installed = true;
-	Vue.component('BPaginatorTable', component);
+	Vue.component('BPaginationTable', component);
 }
 
 // Create module definition for Vue.use()

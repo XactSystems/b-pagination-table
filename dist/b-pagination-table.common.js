@@ -1397,560 +1397,6 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ "2fa0":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e58af3f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/b-paginator-table.vue?vue&type=template&id=07ab88a8&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('b-overlay',{attrs:{"show":_vm.showLoading,"rounded":"sm","variant":"transparent","blur":"1px"}},[(_vm.pageLength || _vm.search)?_c('b-row',[_c('b-col',{attrs:{"cols":"12","md":"3"}},[(_vm.pageLength)?_c('b-form-group',{staticClass:"mb-1",attrs:{"label":"Page length:","label-cols":"5"}},[_c('b-select',{attrs:{"size":"sm","options":_vm.pageLengthOptions},model:{value:(_vm.itemsPerPage),callback:function ($$v) {_vm.itemsPerPage=$$v},expression:"itemsPerPage"}})],1):_vm._e()],1),_c('b-col'),_c('b-col',{attrs:{"cols":"12","md":"4"}},[(_vm.search)?_c('b-form-group',{staticClass:"mb-1",attrs:{"label":"Search:","label-cols":"3"}},[_c('b-input',{attrs:{"size":"sm","debounce":"searchDebounce"},model:{value:(_vm.rawSearchText),callback:function ($$v) {_vm.rawSearchText=$$v},expression:"rawSearchText"}})],1):_vm._e()],1)],1):_vm._e(),_c('b-row',[_c('b-col',[_c('b-table',_vm._g(_vm._b({ref:"table",attrs:{"items":_vm.tableItems,"per-page":_vm.perPage,"current-page":_vm.tableCurrentPage,"sort-by.sync":"tableSortBy","sort-desc.sync":"tableSortDesc","filter":_vm.tableFilter},on:{"filtered":_vm.onTableFilter},scopedSlots:_vm._u([_vm._l((_vm.$scopedSlots),function(index,name){return {key:name,fn:function(data){return [_vm._t(name,null,null,data)]}}})],null,true)},'b-table',_vm.$attrs,false),_vm.$listeners))],1)],1),(_vm.paginator)?_c('b-row',{staticClass:"mt-2"},[_c('b-col',{attrs:{"cols":"6"}},[(_vm.rowCount != _vm.filteredCount)?_c('div',{staticClass:" float-left"},[_vm._v("Showing "+_vm._s(_vm.firstPageRow)+" to "+_vm._s(_vm.lastPageRow)+" of "+_vm._s(_vm.filteredCount)+" filtered entries from "+_vm._s(_vm.rowCount))]):_c('div',{staticClass:" float-left"},[_vm._v("Showing "+_vm._s(_vm.firstPageRow)+" to "+_vm._s(_vm.lastPageRow)+" of "+_vm._s(_vm.rowCount)+" entries")])]),_c('b-col',{staticClass:"mt-0",attrs:{"cols":"6"}},[_c('div',{staticClass:"float-right"},[_c('b-pagination',_vm._g({attrs:{"size":"sm","total-rows":_vm.filteredCount,"per-page":_vm.perPage,"aria-controls":"ccd-table"},scopedSlots:_vm._u([_vm._l((_vm.$scopedSlots),function(index,name){return {key:name,fn:function(data){return [_vm._t(name,null,null,data)]}}})],null,true),model:{value:(_vm.currentPage),callback:function ($$v) {_vm.currentPage=$$v},expression:"currentPage"}},_vm.$listeners))],1)])],1):_vm._e()],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/b-paginator-table.vue?vue&type=template&id=07ab88a8&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
-var es_array_concat = __webpack_require__("99af");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
-var es_array_filter = __webpack_require__("4de4");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
-var es_number_constructor = __webpack_require__("a9e3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
-var es_object_to_string = __webpack_require__("d3b7");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
-var es_regexp_to_string = __webpack_require__("25f0");
-
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("96cf");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.promise.js
-var es_promise = __webpack_require__("e6cf");
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__("bc3a");
-var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
-
-// EXTERNAL MODULE: ./node_modules/url-parse/index.js
-var url_parse = __webpack_require__("1816");
-var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/b-paginator-table.vue?vue&type=script&lang=js&
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ var b_paginator_tablevue_type_script_lang_js_ = ({
-  inheritAttrs: false,
-  props: {
-    dataUrl: String,
-    items: {
-      type: Array,
-      required: false,
-      default: function _default() {
-        return [];
-      }
-    },
-    perPage: {
-      type: Number,
-      required: false,
-      default: 20
-    },
-    paginator: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    pageLength: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    pageLengthOptions: {
-      type: Array,
-      required: false,
-      default: function _default() {
-        return [10, 20, 50, 75, 100];
-      }
-    },
-    search: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    sortBy: {
-      type: String,
-      required: false,
-      default: ''
-    },
-    sortDesc: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    searchMinLength: {
-      type: Number,
-      required: false,
-      default: 0
-    },
-    searchDebounce: {
-      type: Number,
-      required: false,
-      default: 150
-    },
-    ssp: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    state: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  data: function data() {
-    return {
-      tableItems: [],
-      currentPage: 1,
-      itemsPerPage: 20,
-      rowCount: 0,
-      filteredCount: 0,
-      showLoading: false,
-      rawSearchText: null,
-      searchText: null,
-      tableSortBy: '',
-      tableSortDesc: false
-    };
-  },
-  computed: {
-    tableFilter: function tableFilter() {
-      return this.ssp ? null : this.searchText;
-    },
-    firstPageRow: function firstPageRow() {
-      return this.filteredCount > 0 ? (this.currentPage - 1) * this.perPage + 1 : 0;
-    },
-    lastPageRow: function lastPageRow() {
-      return this.filteredCount > 0 ? this.firstPageRow + (this.perPage < this.filteredCount ? this.filteredCount - this.firstPageRow > this.perPage ? this.perPage : this.filteredCount - this.firstPageRow + 1 : this.filteredCount) - 1 : 0;
-    },
-    tableCurrentPage: function tableCurrentPage() {
-      return this.ssp ? 1 : this.currentPage;
-    },
-    stateName: function stateName() {
-      return "b-paginator-table::".concat(this._uid, "::").concat(window.location.host, "/").concat(window.location.pathname);
-    }
-  },
-  watch: {
-    items: {
-      handler: function handler(items) {
-        this.tableItems = Array.isArray(items) ? items : [];
-        this.rowCount = this.filteredCount = this.tableItems.length;
-      },
-      immediate: true
-    },
-    perPage: {
-      handler: function handler(perPage) {
-        this.itemsPerPage = perPage;
-      },
-      immediate: true
-    },
-    rawSearchText: function rawSearchText(newValue) {
-      var len = String(newValue).length;
-
-      if (len == 0 || len >= this.searchMinLength) {
-        this.searchText = newValue;
-      }
-
-      this.saveState();
-    },
-    sortBy: {
-      handler: function handler(newValue) {
-        this.tableSortBy = newValue;
-      },
-      immediate: true
-    },
-    tableSortBy: function tableSortBy() {
-      this.saveState();
-    },
-    sortDesc: {
-      handler: function handler(newValue) {
-        this.tableSortDesc = newValue;
-      },
-      immediate: true
-    },
-    tableSortDesc: function tableSortDesc() {
-      this.saveState();
-    },
-    dataUrl: {
-      handler: function handler() {
-        this.fetchData();
-      },
-      immediate: true
-    },
-    itemsPerPage: function itemsPerPage(_itemsPerPage) {
-      this.$emit('input:per-page', _itemsPerPage);
-      this.sspUpdate();
-      this.saveState();
-    },
-    currentPage: function currentPage() {
-      this.sspUpdate();
-      this.saveState();
-    },
-    searchText: function searchText() {
-      this.sspUpdate();
-    }
-  },
-  mounted: function mounted() {
-    if (this.state && localStorage.getItem(this.stateName)) {
-      var tableState = JSON.parse(localStorage.getItem(this.stateName));
-
-      if (tableState) {
-        this.tableSortBy = tableState.tableSortBy || this.tableSortBy;
-        this.tableSortDesc = tableState.tableSortDesc || this.tableSortDesc;
-        this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
-        this.currentPage = tableState.currentPage || this.currentPage;
-        this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
-      }
-    }
-  },
-  methods: {
-    sspUpdate: function sspUpdate() {
-      if (this.ssp) {
-        // Fetch the new filtered row data
-        this.fetchData();
-      }
-    },
-    saveState: function saveState() {
-      if (this.state) {
-        var tableState = {
-          tableSortBy: this.tableSortBy,
-          tableSortDesc: this.tableSortDesc,
-          itemsPerPage: this.itemsPerPage,
-          currentPage: this.currentPage,
-          rawSearchText: this.rawSearchText
-        };
-        localStorage.setItem(this.stateName, JSON.stringify(tableState));
-      }
-    },
-    fetchData: function () {
-      var _fetchData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var url, result;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!this.dataUrl) {
-                  _context.next = 18;
-                  break;
-                }
-
-                _context.prev = 1;
-                url = this.setPaginationParams(this.dataUrl);
-                this.showLoading = true;
-                _context.next = 6;
-                return axios_default.a.get(url);
-
-              case 6:
-                result = _context.sent;
-                this.tableItems = Array.isArray(result.data.data) ? result.data.data : [];
-
-                if (result.data.totalCount) {
-                  this.rowCount = result.data.totalCount;
-                  this.filteredCount = result.data.filteredCount;
-                } else {
-                  this.rowCount = this.filteredCount = this.tableItems.length;
-                }
-
-                this.$emit('update:items', this.tableItems);
-                _context.next = 15;
-                break;
-
-              case 12:
-                _context.prev = 12;
-                _context.t0 = _context["catch"](1);
-                this.displayError("An error accured fetching the table data from ".concat(this.dataUrl, ": ").concat(_context.t0.message));
-
-              case 15:
-                _context.prev = 15;
-                this.showLoading = false;
-                return _context.finish(15);
-
-              case 18:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this, [[1, 12, 15, 18]]);
-      }));
-
-      function fetchData() {
-        return _fetchData.apply(this, arguments);
-      }
-
-      return fetchData;
-    }(),
-    setPaginationParams: function setPaginationParams(baseUrl) {
-      // If we are not using server-side-pagination return the original, use the b-table filter
-      if (!this.ssp) {
-        return baseUrl;
-      }
-
-      var url = new url_parse_default.a(baseUrl, {}, true);
-      var query = url.query; // Global search filter
-
-      if (this.searchText) {
-        query.filter = this.searchText;
-      } // Sorting
-
-
-      if (this.tableSortBy) {
-        query.orderBy = (this.tableSortDesc ? '-' : '') + this.tableSortBy;
-      } // Pagination
-
-
-      query.pageStart = this.firstPageRow > 0 ? this.firstPageRow - 1 : 0;
-      query.pageLength = this.itemsPerPage;
-      url.set('query', query);
-      return url.toString();
-    },
-    onTableFilter: function onTableFilter(items, count) {
-      this.filteredCount = count;
-    },
-
-    /**
-     * Proxy methods for the table component
-     */
-    selectRow: function selectRow(index) {
-      this.$refs.table.selectRow(index);
-    },
-    unselectRow: function unselectRow(index) {
-      this.$refs.table.unselectRow(index);
-    },
-    selectAllRows: function selectAllRows() {
-      this.$refs.table.selectAllRows();
-    },
-    isRowSelected: function isRowSelected(index) {
-      this.$refs.table.isRowSelected(index);
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/b-paginator-table.vue?vue&type=script&lang=js&
- /* harmony default export */ var src_b_paginator_tablevue_type_script_lang_js_ = (b_paginator_tablevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () {
-        injectStyles.call(
-          this,
-          (options.functional ? this.parent : this).$root.$options.shadowRoot
-        )
-      }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functional component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-// CONCATENATED MODULE: ./src/b-paginator-table.vue
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  src_b_paginator_tablevue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var b_paginator_table = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
 /***/ "30b5":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2842,6 +2288,564 @@ module.exports = function ($this, dummy, Wrapper) {
   return $this;
 };
 
+
+/***/ }),
+
+/***/ "7330":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e58af3f0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/b-pagination-table.vue?vue&type=template&id=a4c00984&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('b-overlay',{attrs:{"show":_vm.showLoading,"rounded":"sm","variant":"transparent","blur":"1px"}},[(_vm.pageLength || _vm.search)?_c('b-row',[_c('b-col',{attrs:{"cols":"12","md":"3"}},[(_vm.pageLength)?_c('b-form-group',{staticClass:"mb-1",attrs:{"label":"Page length:","label-cols":"5"}},[_c('b-select',{attrs:{"size":"sm","options":_vm.pageLengthOptions},model:{value:(_vm.itemsPerPage),callback:function ($$v) {_vm.itemsPerPage=$$v},expression:"itemsPerPage"}})],1):_vm._e()],1),_c('b-col'),_c('b-col',{attrs:{"cols":"12","md":"4"}},[(_vm.search)?_c('b-form-group',{staticClass:"mb-1",attrs:{"label":"Search:","label-cols":"3"}},[_c('b-input',{attrs:{"size":"sm","debounce":"searchDebounce"},model:{value:(_vm.rawSearchText),callback:function ($$v) {_vm.rawSearchText=$$v},expression:"rawSearchText"}})],1):_vm._e()],1)],1):_vm._e(),_c('b-row',[_c('b-col',[_c('b-table',_vm._g(_vm._b({ref:"table",attrs:{"items":_vm.tableItems,"per-page":_vm.itemsPerPage,"current-page":_vm.tableCurrentPage,"sort-by.sync":"tableSortBy","sort-desc.sync":"tableSortDesc","filter":_vm.tableFilter},on:{"filtered":_vm.onTableFilter},scopedSlots:_vm._u([_vm._l((_vm.$scopedSlots),function(index,name){return {key:name,fn:function(data){return [_vm._t(name,null,null,data)]}}})],null,true)},'b-table',_vm.$attrs,false),_vm.$listeners))],1)],1),(_vm.pagination)?_c('b-row',{staticClass:"mt-2"},[_c('b-col',{attrs:{"cols":"6"}},[(_vm.rowCount != _vm.filteredCount)?_c('div',{staticClass:" float-left"},[_vm._v("Showing "+_vm._s(_vm.firstPageRow)+" to "+_vm._s(_vm.lastPageRow)+" of "+_vm._s(_vm.filteredCount)+" filtered entries from "+_vm._s(_vm.rowCount))]):_c('div',{staticClass:" float-left"},[_vm._v("Showing "+_vm._s(_vm.firstPageRow)+" to "+_vm._s(_vm.lastPageRow)+" of "+_vm._s(_vm.rowCount)+" entries")])]),_c('b-col',{staticClass:"mt-0",attrs:{"cols":"6"}},[_c('div',{staticClass:"float-right"},[_c('b-pagination',_vm._g({ref:"pagination",attrs:{"size":"sm","total-rows":_vm.filteredCount,"per-page":_vm.itemsPerPage,"aria-controls":"ccd-table"},scopedSlots:_vm._u([_vm._l((_vm.$scopedSlots),function(index,name){return {key:name,fn:function(data){return [_vm._t(name,null,null,data)]}}})],null,true),model:{value:(_vm.currentPage),callback:function ($$v) {_vm.currentPage=$$v},expression:"currentPage"}},_vm.$listeners))],1)])],1):_vm._e()],1)}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/b-pagination-table.vue?vue&type=template&id=a4c00984&
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
+var es_array_concat = __webpack_require__("99af");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.filter.js
+var es_array_filter = __webpack_require__("4de4");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
+var es_number_constructor = __webpack_require__("a9e3");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__("d3b7");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
+var es_regexp_to_string = __webpack_require__("25f0");
+
+// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__("96cf");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.promise.js
+var es_promise = __webpack_require__("e6cf");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+// EXTERNAL MODULE: ./node_modules/axios/index.js
+var axios = __webpack_require__("bc3a");
+var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
+
+// EXTERNAL MODULE: ./node_modules/url-parse/index.js
+var url_parse = __webpack_require__("1816");
+var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/b-pagination-table.vue?vue&type=script&lang=js&
+
+
+
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var b_pagination_tablevue_type_script_lang_js_ = ({
+  inheritAttrs: false,
+  props: {
+    dataUrl: String,
+    items: {
+      type: Array,
+      required: false,
+      default: function _default() {
+        return [];
+      }
+    },
+    perPage: {
+      type: Number,
+      required: false,
+      default: 20
+    },
+    pagination: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    pageLength: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    pageLengthOptions: {
+      type: Array,
+      required: false,
+      default: function _default() {
+        return [10, 20, 50, 75, 100];
+      }
+    },
+    search: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    sortBy: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    sortDesc: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    searchMinLength: {
+      type: Number,
+      required: false,
+      default: 0
+    },
+    searchDebounce: {
+      type: Number,
+      required: false,
+      default: 150
+    },
+    ssp: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    state: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data: function data() {
+    return {
+      tableItems: [],
+      currentPage: 1,
+      itemsPerPage: 20,
+      rowCount: 0,
+      filteredCount: 0,
+      showLoading: false,
+      rawSearchText: null,
+      searchText: null,
+      tableSortBy: '',
+      tableSortDesc: false
+    };
+  },
+  computed: {
+    tableFilter: function tableFilter() {
+      return this.ssp ? null : this.searchText;
+    },
+    firstPageRow: function firstPageRow() {
+      return this.filteredCount > 0 ? (this.currentPage - 1) * this.itemsPerPage + 1 : 0;
+    },
+    lastPageRow: function lastPageRow() {
+      return this.filteredCount > 0 ? this.firstPageRow + (this.itemsPerPage < this.filteredCount ? this.filteredCount - this.firstPageRow > this.itemsPerPage ? this.itemsPerPage : this.filteredCount - this.firstPageRow + 1 : this.filteredCount) - 1 : 0;
+    },
+    tableCurrentPage: function tableCurrentPage() {
+      return this.ssp ? 1 : this.currentPage;
+    },
+    stateName: function stateName() {
+      return "b-pagination-table_".concat(this._uid, "_").concat(window.location.pathname);
+    }
+  },
+  watch: {
+    items: {
+      handler: function handler(items) {
+        this.tableItems = Array.isArray(items) ? items : [];
+        this.rowCount = this.filteredCount = this.tableItems.length;
+      },
+      immediate: true
+    },
+    perPage: {
+      handler: function handler(perPage) {
+        this.itemsPerPage = perPage;
+      },
+      immediate: true
+    },
+    rawSearchText: function rawSearchText(newValue) {
+      var len = String(newValue).length;
+
+      if (len == 0 || len >= this.searchMinLength) {
+        this.searchText = newValue;
+      }
+
+      this.saveState();
+    },
+    sortBy: {
+      handler: function handler(newValue) {
+        this.tableSortBy = newValue;
+      },
+      immediate: true
+    },
+    tableSortBy: function tableSortBy() {
+      this.saveState();
+    },
+    sortDesc: {
+      handler: function handler(newValue) {
+        this.tableSortDesc = newValue;
+      },
+      immediate: true
+    },
+    tableSortDesc: function tableSortDesc() {
+      this.saveState();
+    },
+    dataUrl: {
+      handler: function handler() {
+        this.fetchData();
+      },
+      immediate: true
+    },
+    itemsPerPage: function itemsPerPage(_itemsPerPage) {
+      this.$emit('input:per-page', _itemsPerPage);
+      this.sspUpdate();
+      this.saveState();
+    },
+    currentPage: function currentPage() {
+      this.sspUpdate();
+      this.saveState();
+    },
+    searchText: function searchText() {
+      this.sspUpdate();
+    }
+  },
+  mounted: function mounted() {
+    if (this.state && localStorage.getItem(this.stateName)) {
+      var tableState = JSON.parse(localStorage.getItem(this.stateName));
+
+      if (tableState) {
+        this.tableSortBy = tableState.tableSortBy || this.tableSortBy;
+        this.tableSortDesc = tableState.tableSortDesc || this.tableSortDesc;
+        this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
+        this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
+        this.filteredCount = tableState.filteredCount || this.filteredCount;
+        this.$nextTick(function () {
+          this.currentPage = tableState.currentPage || this.currentPage;
+        });
+      }
+    }
+  },
+  methods: {
+    sspUpdate: function sspUpdate() {
+      if (this.ssp) {
+        // Fetch the new filtered row data
+        this.fetchData();
+      }
+    },
+    saveState: function saveState() {
+      if (this.state) {
+        var tableState = {
+          tableSortBy: this.tableSortBy,
+          tableSortDesc: this.tableSortDesc,
+          rawSearchText: this.rawSearchText,
+          itemsPerPage: this.itemsPerPage,
+          filteredCount: this.filteredCount,
+          currentPage: this.currentPage
+        };
+        localStorage.setItem(this.stateName, JSON.stringify(tableState));
+      }
+    },
+    fetchData: function () {
+      var _fetchData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var url, result;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.dataUrl) {
+                  _context.next = 18;
+                  break;
+                }
+
+                _context.prev = 1;
+                url = this.setPaginationParams(this.dataUrl);
+                this.showLoading = true;
+                _context.next = 6;
+                return axios_default.a.get(url);
+
+              case 6:
+                result = _context.sent;
+                this.tableItems = Array.isArray(result.data.data) ? result.data.data : [];
+
+                if (result.data.totalCount) {
+                  this.rowCount = result.data.totalCount;
+                  this.filteredCount = result.data.filteredCount;
+                } else {
+                  this.rowCount = this.filteredCount = this.tableItems.length;
+                }
+
+                this.$emit('update:items', this.tableItems);
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](1);
+                this.displayError("An error accured fetching the table data from ".concat(this.dataUrl, ": ").concat(_context.t0.message));
+
+              case 15:
+                _context.prev = 15;
+                this.showLoading = false;
+                return _context.finish(15);
+
+              case 18:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[1, 12, 15, 18]]);
+      }));
+
+      function fetchData() {
+        return _fetchData.apply(this, arguments);
+      }
+
+      return fetchData;
+    }(),
+    setPaginationParams: function setPaginationParams(baseUrl) {
+      // If we are not using server-side-pagination return the original, use the b-table filter
+      if (!this.ssp) {
+        return baseUrl;
+      }
+
+      var url = new url_parse_default.a(baseUrl, {}, true);
+      var query = url.query; // Global search filter
+
+      if (this.searchText) {
+        query.filter = this.searchText;
+      } // Sorting
+
+
+      if (this.tableSortBy) {
+        query.orderBy = (this.tableSortDesc ? '-' : '') + this.tableSortBy;
+      } // Pagination
+
+
+      query.pageStart = this.firstPageRow > 0 ? this.firstPageRow - 1 : 0;
+      query.pageLength = this.itemsPerPage;
+      url.set('query', query);
+      return url.toString();
+    },
+    onTableFilter: function onTableFilter(items, count) {
+      this.filteredCount = count;
+    },
+
+    /**
+     * Proxy methods for the table component
+     */
+    selectRow: function selectRow(index) {
+      this.$refs.table.selectRow(index);
+    },
+    unselectRow: function unselectRow(index) {
+      this.$refs.table.unselectRow(index);
+    },
+    selectAllRows: function selectAllRows() {
+      this.$refs.table.selectAllRows();
+    },
+    isRowSelected: function isRowSelected(index) {
+      this.$refs.table.isRowSelected(index);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/b-pagination-table.vue?vue&type=script&lang=js&
+ /* harmony default export */ var src_b_pagination_tablevue_type_script_lang_js_ = (b_pagination_tablevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () {
+        injectStyles.call(
+          this,
+          (options.functional ? this.parent : this).$root.$options.shadowRoot
+        )
+      }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functional component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+// CONCATENATED MODULE: ./src/b-pagination-table.vue
+
+
+
+
+
+/* normalize component */
+
+var component = normalizeComponent(
+  src_b_pagination_tablevue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var b_pagination_table = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -4808,14 +4812,14 @@ module.exports = function (name) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return install; });
-/* harmony import */ var _b_paginator_table_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2fa0");
+/* harmony import */ var _b_pagination_table_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7330");
 // Import vue component
  // Declare install function executed by Vue.use()
 
 function install(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('BPaginatorTable', _b_paginator_table_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+  Vue.component('BPaginationTable', _b_pagination_table_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
 } // Create module definition for Vue.use()
 
 var plugin = {
@@ -4835,7 +4839,7 @@ if (GlobalVue) {
 } // To allow use as module (npm/webpack/etc.) export component
 
 
-/* harmony default export */ __webpack_exports__["a"] = (_b_paginator_table_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
+/* harmony default export */ __webpack_exports__["a"] = (_b_pagination_table_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
 
 /***/ }),
@@ -6777,4 +6781,4 @@ module.exports = global.Promise;
 /***/ })
 
 /******/ })["default"];
-//# sourceMappingURL=b-paginator-table.common.js.map
+//# sourceMappingURL=b-pagination-table.common.js.map
