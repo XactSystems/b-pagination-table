@@ -2,7 +2,6 @@
   "name": "b-pagination-table",
   "version": "0.1.0",
   "description": "A pagination table for BootstrapVue with AJAX fetch and server side pagination options.",
-  "private": true,
   "main": "dist/b-pagination-table.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve src/b-pagination-table.vue",
