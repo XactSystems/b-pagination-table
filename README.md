@@ -49,30 +49,28 @@ export default {
 | items                   | Array   | []                      | Array of items to show in the table. Do not use this if you are using data-url.                                                                                                   |
 | pagination              | Boolean | true                    | Show the pagination component.                                                                                                                                                    |
 | page-length             | Boolean | false                   | Show the page-length dropdown.                                                                                                                                                    |
+| per-page                | Number  | 20                      | The initial page length of the table.                                                                                                                                             |
 | page-length-options     | Array   | [ 10, 20, 50, 75, 100 ] | Options for the page length dropdown.                                                                                                                                             |
 | search                  | Boolean | false                   | Show the search text input.                                                                                                                                                       |
 | sort-by                 | String  | ''                      | The key of the initial sort column.                                                                                                                                               |
-| sort-desc               | Boolean | false                   | Set to true to sort sort-by in descending order.                                                                                                                                  |
+| sort-desc               | Boolean | false                   | Set to true to sort sort-by descending order.                                                                                                                                  |
 | search-min-length       | Number  | 0                       | The minimum number of character to enter in the search text input before filtering the table results.                                                                             |
 | search-debounce         | Number  | 150                     | The number of milliseconds to wait between changes to the table filter when searching.                                                                                            |
 | ssp                     | Boolean | false                   | Set to true to use Server-Side-Processing for pagination.                                                                                                                         |
 | state                   | Boolean | false                   | Set to true to save the table state, this will save page-length, search text and the current page number and set these again when the component is re-mounted or the page loaded. |
 | pagination-size         | String  | 'md'                    | The size of the pagination component. This maps to the 'size' prop in b-pagination.                                                                                               |
-| pagination-aria-label   | String  | 'md'                    | The AIRA label of the pagination component. This maps to the 'aria-label' prop in b-pagination.                                                                                   |
+| pagination-aria-label   | String  | 'md'                    | The ARIA label of the pagination component. This maps to the 'aria-label' prop in b-pagination.                                                                                   |
 
 Please review the full set of props for both the b-table and the b-pagination components:
 https://bootstrap-vue.org/docs/components/table
 https://bootstrap-vue.org/docs/components/pagination
 
 ### Events
-```
 All the events of both b-table and b-pagination are exposed. In addition the following events are emitted:
 |Event         |Payload       |Details                                                          |
 |--------------|--------------|-----------------------------------------------------------------|
 |input:per-page|Number, String| The size of the page length after the dropdown value is changed.|
 |update:items  |Array         | The array of item data fetched from the data-url source.        |
-
-```
 
 ### Server Side Processing
 The component allows pagination on the back-end server by providing page relative query parameters to the fetch url. This is enabled by setting the ssp prop to true.
