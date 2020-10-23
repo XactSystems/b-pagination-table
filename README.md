@@ -1,11 +1,14 @@
-# b-paginator-table
+# b-pagination-table
 A pagination table for BootstrapVue with AJAX fetch and server side pagination options.
 
 Internally the component uses b-pagination and b-table combined into a single component. All the props and slots for both sub-components can be applied to b-pagination-table. Any arbitrary attributes are applied to the b-table component via $attrs.
 
 You can supply a list of items or provide a URL to fetch the list from.
 
-## Add the component to your project
+
+## Installation
+
+### Add the component to your project
 ```
 npm install @xact/b-pagination-table
 ```
@@ -42,7 +45,8 @@ export default {
 }
 ```
 
-### Component props
+
+## Component props
 | Prop                    | Type    | Default Value           | Description                                                                                                                                                                       |
 |-------------------------|---------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | data-url                | String  | null                    | The URL to fetch the table data from.                                                                                                                                             |
@@ -61,21 +65,26 @@ export default {
 | pagination-size         | String  | 'md'                    | The size of the pagination component. This maps to the 'size' prop in b-pagination.                                                                                               |
 | pagination-aria-label   | String  | 'md'                    | The ARIA label of the pagination component. This maps to the 'aria-label' prop in b-pagination.                                                                                   |
 
+
 Please review the full set of props for both the b-table and the b-pagination components:
+
 https://bootstrap-vue.org/docs/components/table
+
 https://bootstrap-vue.org/docs/components/pagination
 
-### Events
+
+## Events
 All the events of both b-table and b-pagination are exposed. In addition the following events are emitted:
 |Event         |Payload       |Details                                                          |
 |--------------|--------------|-----------------------------------------------------------------|
 |input:per-page|Number, String| The size of the page length after the dropdown value is changed.|
 |update:items  |Array         | The array of item data fetched from the data-url source.        |
 
-### Server Side Processing
+
+## Server Side Processing
 The component allows pagination on the back-end server by providing page relative query parameters to the fetch url. This is enabled by setting the ssp prop to true.
 
-## Query Parameters
+### SSP Query Parameters
 |Parameter|Description                                                                                                     |
 |---------|----------------------------------------------------------------------------------------------------------------|
 |filter   | The search text to filter the results by.                                                                      |
