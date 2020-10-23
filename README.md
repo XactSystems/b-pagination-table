@@ -3,7 +3,7 @@ A pagination table for BootstrapVue with AJAX fetch and server side pagination o
 
 Internally the component uses b-pagination and b-table combined into a single component. All the props and slots for both sub-components can be applied to b-pagination-table. Any arbitrary attributes are applied to the b-table component via $attrs.
 
-You can supply a list of items or provide a URL to fetch the list from.
+You can supply a list of items or provide a URL to fetch the data.
 
 
 ## Installation
@@ -34,7 +34,7 @@ export default {
 
     data() {
         return {
-            dataurl: '/my-list',
+            dataUrl: '/my-list',
             fields: [
                 { key: 'id', label: 'Item' },
                 { key: 'description', label: 'Description' }
@@ -50,14 +50,14 @@ export default {
 | Prop                    | Type    | Default Value           | Description                                                                                                                                                                       |
 |-------------------------|---------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | data-url                | String  | null                    | The URL to fetch the table data from.                                                                                                                                             |
-| items                   | Array   | []                      | Array of items to show in the table. Do not use this if you are using data-url.                                                                                                   |
+| items                   | Array   | []                      | Array of items to show in the table. You do not need to use this if you are using data-url unless you want to sync the returned items via the update:items event.                 |
 | pagination              | Boolean | true                    | Show the pagination component.                                                                                                                                                    |
 | page-length             | Boolean | false                   | Show the page-length dropdown.                                                                                                                                                    |
 | per-page                | Number  | 20                      | The initial page length of the table.                                                                                                                                             |
 | page-length-options     | Array   | [ 10, 20, 50, 75, 100 ] | Options for the page length dropdown.                                                                                                                                             |
 | search                  | Boolean | false                   | Show the search text input.                                                                                                                                                       |
 | sort-by                 | String  | ''                      | The key of the initial sort column.                                                                                                                                               |
-| sort-desc               | Boolean | false                   | Set to true to sort sort-by descending order.                                                                                                                                  |
+| sort-desc               | Boolean | false                   | Set to true to sort sort-by descending order.                                                                                                                                     |
 | search-min-length       | Number  | 0                       | The minimum number of character to enter in the search text input before filtering the table results.                                                                             |
 | search-debounce         | Number  | 150                     | The number of milliseconds to wait between changes to the table filter when searching.                                                                                            |
 | ssp                     | Boolean | false                   | Set to true to use Server-Side-Processing for pagination.                                                                                                                         |
