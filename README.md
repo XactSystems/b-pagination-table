@@ -10,7 +10,7 @@ You can supply a list of items or provide a URL to fetch the data.
 
 ### Add the component to your project
 ```
-npm install @xact/b-pagination-table
+npm install @xactsystems/b-pagination-table
 ```
 
 ### Use it in your Vue app
