@@ -91,3 +91,11 @@ The component allows pagination on the back-end server by providing page relativ
 |orderBy  | Provides the key to sort the results by. If this is preceded by '-' the results should be sorted as descending.|
 |pageStart| The first row number the results should start at.                                                              |
 |pageLength| The maximum number of rows to return.                                                                         |
+
+### SSP Returned Data
+|Parameter|Description                                                                                                     |
+|---------|----------------------------------------------------------------------------------------------------------------|
+|returnedCount| The number of records returned in the current response.                                                    |
+|totalCount   | The total number of records available in the result set.                                                   |
+|filteredCount| The number of filtered records available in the result set.                                                |
+|data         | The current page records returned in the response.                                                                         |
