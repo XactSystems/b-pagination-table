@@ -1,0 +1,6 @@
+#!/bin/bash
+# Build and publish the component to NPM
+
+npm run build
+
+np --no-tests
