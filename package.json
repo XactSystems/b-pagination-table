@@ -3,6 +3,19 @@
   "version": "1.0.3",
   "description": "A pagination table for BootstrapVue with AJAX fetch and server side pagination options.",
   "main": "dist/b-pagination-table.umd.js",
+  "keywords": [
+    "bootstrap",
+    "bootstrap-vue",
+    "vue",
+    "component",
+    "table",
+    "grid",
+    "b-table",
+    "pagination",
+    "b-pagination",
+    "ajax",
+    "axios"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve src/b-pagination-table.vue",
     "build": "vue-cli-service build --target lib --name b-pagination-table 'src/index.js'",
