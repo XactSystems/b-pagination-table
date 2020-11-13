@@ -26,22 +26,23 @@
                 </b-table>
             </b-col>
         </b-row>
-        <b-row v-if="pagination" class="mt-2">
-            <b-col cols="6">
-                <div v-if="rowCount != filteredCount" class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ filteredCount }} filtered entries from {{ rowCount }}</div>
-                <div v-else class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ rowCount }} entries</div>
+        <b-row v-if="pagination != false" class="mt-1">
+            <b-col cols="6" class="my-auto">
+                <span v-if="rowCount != filteredCount" class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ filteredCount }} filtered entries from {{ rowCount }}</span>
+                <span v-else class=" float-left">Showing {{firstPageRow }} to {{ lastPageRow }} of {{ rowCount }} entries</span>
             </b-col>
             <b-col cols="6" class="mt-0">
                 <div class="float-right">
-                    <b-pagination ref="pagination" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" v-on="$listeners"
-                    :limit="limit" :align="align" :pills="pills" :hide-goto-end-buttons="hideGotoEndButtons"
-                    :label-first-page="labelFirstPage" :first-text="firstText" :first-number="firstNumber" :first-class="firstClass"
-                    :label-prev-page="labelPrevPage" :prev-text="prevText" :prev-class="prevClass"
-                    :label-next-page="labelNextPage" :next-text="nextText" :next-class="nextClass"
-                    :label-last-page="labelLastPage" :last-text="lastText" :last-number="lastNumber" :last-class="lastClass"
-                    :label-page="labelPage" :page-class="pageClass"
-                    :hide-ellipsis="hideEllipsis" :ellipsis-text="ellipsisText" :ellipsis-class="ellipsisClass"
-                    :size="paginationSize" :aria-label="paginationAriaLabel" :aria-controls="tableId">
+                    <b-pagination v-if="showPagination" ref="pagination" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" v-on="$listeners"
+                        :limit="limit" :align="align" :pills="pills" :hide-goto-end-buttons="hideGotoEndButtons"
+                        :label-first-page="labelFirstPage" :first-text="firstText" :first-number="firstNumber" :first-class="firstClass"
+                        :label-prev-page="labelPrevPage" :prev-text="prevText" :prev-class="prevClass"
+                        :label-next-page="labelNextPage" :next-text="nextText" :next-class="nextClass"
+                        :label-last-page="labelLastPage" :last-text="lastText" :last-number="lastNumber" :last-class="lastClass"
+                        :label-page="labelPage" :page-class="pageClass"
+                        :hide-ellipsis="hideEllipsis" :ellipsis-text="ellipsisText" :ellipsis-class="ellipsisClass"
+                        :size="paginationSize" :aria-label="paginationAriaLabel" :aria-controls="tableId"
+                        class="mx-1">
                         <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                             <slot :name="name" v-bind="data"></slot>
                         </template>
@@ -65,7 +66,10 @@ export default {
         dataUrl: String,
         items: { type: Array, required: false, default: () => [] },
         perPage: { type: [String, Number], required: false, default: 20 },
-        pagination: { type: Boolean, required: false, default: true },
+        pagination: {
+            type: [Boolean, String], required: false, default: true,
+            validator: (value) => ['always', true, false].indexOf(value) !== -1
+        },
         pageLength: { type: Boolean, required: false, default: false },
         pageLengthOptions: { type: Array, required: false, default: () => [ 10, 20, 50, 75, 100 ] },
         search: { type: Boolean, required: false, default: false },
@@ -136,6 +140,10 @@ export default {
             ) : 0;
         },
 
+        pageCount() {
+            return Math.ceil(this.filteredCount / this.itemsPerPage);
+        },
+
         tableCurrentPage() {
             return (this.ssp ? 1 : this.currentPage);
         },
@@ -146,6 +154,10 @@ export default {
 
         tableId() {
             return `b-pagination-table-${this._uid }`;
+        },
+
+        showPagination() {
+            return (this.pagination == 'always' || (this.pagination == true && this.pageCount > 1));
         }
     },
 
