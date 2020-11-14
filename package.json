@@ -16,6 +16,10 @@
     "ajax",
     "axios"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XactSystems/b-pagination-table"
+  },
   "scripts": {
     "serve": "vue-cli-service serve src/b-pagination-table.vue",
     "build": "vue-cli-service build --target lib --name b-pagination-table 'src/index.js'",
