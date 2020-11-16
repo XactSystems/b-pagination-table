@@ -25,7 +25,7 @@ npm install @xactsystems/b-pagination-table
 
 <script>
 
-import BPaginationTable from 'b-pagination-table'
+import BPaginationTable from '@xactsystems/b-pagination-table'
 
 export default {
     Components: {
