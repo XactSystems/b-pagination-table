@@ -3,7 +3,7 @@
         <b-row v-if="pageLength || search">
             <b-col cols="12" md="3">
                 <b-form-group v-if="pageLength" label="Page length:" label-cols="5" class="mb-1">
-                    <b-select size="sm" v-model="itemsPerPage" :options="pageLengthOptions" />
+                    <b-select size="sm" v-model.number="itemsPerPage" :options="pageLengthOptions" />
                 </b-form-group>
             </b-col>
             <b-col />
@@ -172,7 +172,7 @@ export default {
 
         perPage: {
             handler(perPage) {
-                this.itemsPerPage = perPage;
+                this.itemsPerPage = Number(perPage);
             },
             immediate: true
         },
