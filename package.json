@@ -21,7 +21,7 @@
     "url": "https://github.com/XactSystems/b-pagination-table"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "serve": "vue-cli-service serve src/b-pagination-table.vue",
