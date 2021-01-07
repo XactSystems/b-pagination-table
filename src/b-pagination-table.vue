@@ -15,11 +15,11 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table ref="table" v-bind="$attrs" :items="tableItems" :id="tableId"
-                    :per-page="itemsPerPage" :current-page="tableCurrentPage"
-                    sort-by.sync="tableSortBy" sort-desc.sync="tableSortDesc"
-                    :filter="tableFilter" @filtered="onTableFilter" v-on="$listeners"
-                    :aria-label="ariaLabel">
+                <b-table ref="table" v-bind="$attrs" :items="tableItemsOrFunc" :id="tableId"
+                    :api-url="dataUrl" :per-page="itemsPerPage" :current-page="tableCurrentPage"
+                    :sort-by.sync="tableSortBy" :sort-desc.sync="tableSortDesc"
+                    :filter="searchText" @filtered="onTableFilter" @sort-changed="onTableSortChanged"
+                    v-on="$listeners" :aria-label="ariaLabel">
                     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
@@ -106,11 +106,13 @@ export default {
         ellipsisClass: [String, Array, Object],
         paginationSize: String,
         paginationAriaLabel: { type: String, required: false, default: 'Pagination' },
+        // Table refresh when using the dataUrl with or without SSP
+        refresh: { type: Boolean, required: false, default: false },
     },
 
     data() {
         return {
-            tableItems: [],
+            tableData: [],
             currentPage: 1,
             itemsPerPage: 20,
             rowCount: 0,
@@ -120,14 +122,11 @@ export default {
             searchText: null,
             tableSortBy: '',
             tableSortDesc: false,
+            localRefresh: false,
         }
     },
 
     computed: {
-        tableFilter() {
-            return (this.ssp ? null : this.searchText);
-        },
-
         firstPageRow() {
             return this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0;
         },
@@ -158,14 +157,22 @@ export default {
 
         showPagination() {
             return (this.pagination == 'always' || (this.pagination == true && this.pageCount > 1));
+        },
+
+        tableItemsOrFunc() {
+            // If using SSP we must use the items provider function
+            if (this.ssp) {
+                return this.fetchFilteredItems;
+            }
+            return this.tableData;
         }
     },
 
     watch: {
         items: {
             handler(items) {
-                this.tableItems = (Array.isArray(items) ? items: []);
-                this.rowCount = this.filteredCount = this.tableItems.length;
+                this.tableData = items;
+                this.rowCount = this.filteredCount = this.tableData.length;
             },
             immediate: true
         },
@@ -173,6 +180,27 @@ export default {
         perPage: {
             handler(perPage) {
                 this.itemsPerPage = Number(perPage);
+            },
+            immediate: true
+        },
+
+        sortBy: {
+            handler(newValue) {
+                this.tableSortBy = newValue;
+            },
+            immediate: true
+        },
+
+        sortDesc: {
+            handler(newValue) {
+                this.tableSortDesc = newValue;
+            },
+            immediate: true
+        },
+
+        dataUrl: {
+            handler() {
+                this.refreshTableData();
             },
             immediate: true
         },
@@ -185,48 +213,27 @@ export default {
             this.saveState();
         },
 
-        sortBy: {
-            handler(newValue) {
-                this.tableSortBy = newValue;
-            },
-            immediate: true
-        },
-
-        tableSortBy() {
-            this.saveState();
-        },
-
-        sortDesc: {
-            handler(newValue) {
-                this.tableSortDesc = newValue;
-            },
-            immediate: true
-        },
-
-        tableSortDesc() {
-            this.saveState();
-        },
-
-        dataUrl: {
-            handler() {
-                this.fetchData();
-            },
-            immediate: true
-        },
-
         itemsPerPage(itemsPerPage) {
-            this.$emit('input:per-page', itemsPerPage);
-            this.sspUpdate();
+            this.$emit('update:per-page', itemsPerPage);
             this.saveState();
         },
 
         currentPage() {
-            this.sspUpdate();
             this.saveState();
         },
 
-        searchText() {
-            this.sspUpdate();
+        refresh(refresh) {
+            this.localRefresh = refresh;
+        },
+
+        localRefresh(refresh) {
+            if (refresh) {
+                this.refreshTableData();
+                this.$nextTick(function() {
+                    this.refresh = false;
+                });
+            }
+            this.$emit('update:refresh', this.localRefresh);
         },
     },
 
@@ -247,11 +254,8 @@ export default {
     },
 
     methods: {
-        sspUpdate() {
-            if (this.ssp) {
-                // Fetch the new filtered row data
-                this.fetchData();
-            }
+        onTableSortChanged(context) {
+            this.saveState();
         },
 
         saveState() {
@@ -268,56 +272,80 @@ export default {
             }
         },
 
-        fetchData: async function() {
-            if (this.dataUrl) {
+        // Fetch the unfiltered table data from the server or call refresh
+        refreshTableData() {
+            if (!this.ssp && this.dataUrl) {
+                const context = {
+                    apiUrl: this.dataUrl,
+                    filter: null,
+                    sortBy: null,
+                    perPage: null,
+                };
+
+                this.fetchFilteredItems(context);
+            } else {
+                this.$refs.table.refresh();
+            }
+        },
+
+        /**
+         * Fetch the filtered data from the server. This uses
+         * Server Side Processing to filter and sort the data.
+         * See 'Using items provider functions'
+         * https://bootstrap-vue.org/docs/components/table#using-items-provider-functions
+         */
+        async fetchFilteredItems(context) {
+            if (context.apiUrl) {
                 try {
-                    let url = this.setPaginationParams(this.dataUrl);
+                    let url = this.getPaginationUrl(context);
                     this.showLoading = true;
                     let result = await axios.get(url);
-                    this.tableItems =  (Array.isArray(result.data.data) ? result.data.data: []);
+                    this.tableData =  (Array.isArray(result.data.data) ? result.data.data: []);
                     if (result.data.totalCount) {
                         this.rowCount = result.data.totalCount;
                         this.filteredCount = result.data.filteredCount;
                     } else {
-                        this.rowCount = this.filteredCount = this.tableItems.length;
+                        this.rowCount = this.filteredCount = this.tableData.length;
                     }
 
-                    this.$emit('update:items', this.tableItems);
+                    this.$emit('update:items', this.tableData);
                 }
                 catch (error) {
-                    this.displayError(`An error accured fetching the table data from ${this.dataUrl}: ${error.message}`);
+                    this.tableData = [];
+                    this.displayError(`An error accured fetching the table data from ${context.apiUrl}: ${error.message}`);
                 }
                 finally {
                     this.showLoading = false;
                 }
             }
+            return this.tableData;
         },
 
-        setPaginationParams(baseUrl) {
+        getPaginationUrl(context) {
             // If we are not using server-side-pagination return the original, use the b-table filter
             if (!this.ssp) {
-                return baseUrl;
+                return context.apiUrl;
             }
-            let url = new Url(baseUrl, {}, true);
+            let url = new Url(context.apiUrl, {}, true);
             let query = url.query;
             // Global search filter
-            if (this.searchText) {
-                 query.filter = this.searchText;
+            if (context.filter) {
+                 query.filter = context.filter;
             }
             // Sorting
-            if (this.tableSortBy) {
-                query.orderBy = (this.tableSortDesc ? '-' : '' ) + this.tableSortBy;
+            if (context.sortBy) {
+                query.orderBy = (context.sortDesc ? '-' : '' ) + context.sortBy;
             }
             // Pagination
             query.pageStart = (this.firstPageRow > 0 ? this.firstPageRow - 1 : 0);
-            query.pageLength = this.itemsPerPage;
+            query.pageLength = context.perPage;
 
             url.set('query', query);
             return url.toString();
         },
 
         onTableFilter(items, count) {
-            this.filteredCount = count;
+            this.filteredCount = (this.ssp ? this.filteredCount : count);
         },
 
         /**
