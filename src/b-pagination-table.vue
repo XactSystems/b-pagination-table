@@ -254,7 +254,7 @@ export default {
     },
 
     methods: {
-        onTableSortChanged(context) {
+        onTableSortChanged() {
             this.saveState();
         },
 
