@@ -283,7 +283,7 @@ export default {
                 };
 
                 this.fetchFilteredItems(context);
-            } else {
+            } else if (this.$refs.table) {
                 this.$refs.table.refresh();
             }
         },
