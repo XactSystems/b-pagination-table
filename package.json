@@ -1,6 +1,6 @@
 {
   "name": "@xactsystems/b-pagination-table",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A pagination table for BootstrapVue with AJAX fetch and server side pagination options.",
   "main": "dist/b-pagination-table.umd.js",
   "keywords": [
