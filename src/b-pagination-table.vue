@@ -216,13 +216,16 @@ export default {
         itemsPerPage(itemsPerPage) {
             this.$emit('update:per-page', itemsPerPage);
             // Reset the page number if it's now outside of the possible range
-            if (Math.ceil(this.rowCount / this.itemsPerPage) < this.currentPage) {
+            if (!this.ssp && Math.ceil(this.rowCount / this.itemsPerPage) < this.currentPage) {
                 this.currentPage = Math.ceil(this.rowCount / this.itemsPerPage);
             }
             this.saveState();
         },
 
         currentPage() {
+            if (this.ssp) {
+                this.refreshTableData();
+            }
             this.saveState();
         },
 
