@@ -80,6 +80,7 @@ export default {
         ssp: { type: Boolean, required: false, default: false },
         state: { type: Boolean, required: false, default: false },
         ariaLabel: { type: String, required: false, default: 'Pagination Table' },
+        id: { type: String, required: false },
         // Pagination props
         limit: [String, Number],
         align: { type: String, required: false, default: 'left' },
@@ -152,7 +153,7 @@ export default {
         },
 
         tableId() {
-            return `b-pagination-table-${this._uid }`;
+            return this.id || `b-pagination-table-${this._uid }`;
         },
 
         showPagination() {
@@ -353,6 +354,10 @@ export default {
 
         onTableFilter(items, count) {
             this.filteredCount = (this.ssp ? this.filteredCount : count);
+        },
+
+        displayError(message) {
+            this.$bvModal.msgBoxOk(message, { title: 'Pagination Table' });
         },
 
         /**
