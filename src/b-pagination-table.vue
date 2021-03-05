@@ -214,13 +214,13 @@ export default {
             this.saveState();
         },
 
+        filteredCount() {
+            this.setFilteredPagePosition();
+        },
+
         itemsPerPage(itemsPerPage) {
             this.$emit('update:per-page', itemsPerPage);
-            // Reset the page number if it's now outside of the possible range
-            if (!this.ssp && Math.ceil(this.rowCount / this.itemsPerPage) < this.currentPage) {
-                this.currentPage = Math.ceil(this.rowCount / this.itemsPerPage);
-            }
-            this.saveState();
+            this.setFilteredPagePosition();
         },
 
         currentPage() {
@@ -256,6 +256,7 @@ export default {
                 this.filteredCount = tableState.filteredCount || this.filteredCount;
                 this.$nextTick(function() {
                     this.currentPage = tableState.currentPage || this.currentPage;
+                    this.setFilteredPagePosition();
                 });
             }
         }
@@ -294,6 +295,14 @@ export default {
             } else if (this.$refs.table) {
                 this.$refs.table.refresh();
             }
+        },
+
+        setFilteredPagePosition() {
+            // Reset the page number if it's now outside of the possible range
+            if (Math.ceil(this.filteredCount / this.itemsPerPage) < this.currentPage) {
+                this.currentPage = Math.ceil(this.filteredCount / this.itemsPerPage);
+            }
+            this.saveState();
         },
 
         /**
