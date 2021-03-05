@@ -300,7 +300,7 @@ export default {
         setFilteredPagePosition() {
             // Reset the page number if it's now outside of the possible range
             if (Math.ceil(this.filteredCount / this.itemsPerPage) < this.currentPage) {
-                this.currentPage = Math.ceil(this.filteredCount / this.itemsPerPage);
+                this.currentPage = (this.filteredCount > 0 ? Math.ceil(this.filteredCount / this.itemsPerPage) : 1);
             }
             this.saveState();
         },
