@@ -1,16 +1,20 @@
 <template>
     <b-overlay :show="showLoading" rounded="sm" variant="transparent" blur="1px">
         <b-row v-if="pageLength || search">
-            <b-col cols="12" md="3">
+            <b-col cols="12" :md="pageLengthCols">
                 <b-form-group v-if="pageLength" label="Page length:" label-cols="5" class="mb-1">
                     <b-select size="sm" v-model.number="itemsPerPage" :options="pageLengthOptions" />
                 </b-form-group>
             </b-col>
-            <b-col />
-            <b-col cols="12" md="4">
-                <b-form-group v-if="search" label="Search:" label-cols="3" class="mb-1">
-                    <b-input size="sm" v-model="rawSearchText" debounce="searchDebounce" />
-                </b-form-group>
+            <b-col>
+                <slot name="header"></slot>
+            </b-col>
+            <b-col cols="12" :md="searchCols">
+                <slot name="search" :search-debounce="searchDebounce">
+                    <b-form-group v-if="search && filterFunction === null" label="Search:" label-cols="3" class="mb-1">
+                        <b-input size="sm" v-model="rawSearchText" :debounce="searchDebounce" />
+                    </b-form-group>
+                </slot>
             </b-col>
         </b-row>
         <b-row>
@@ -18,8 +22,8 @@
                 <b-table ref="table" v-bind="$attrs" :items="tableItemsOrFunc" :id="tableId"
                     :api-url="dataUrl" :per-page="itemsPerPage" :current-page="tableCurrentPage"
                     :sort-by.sync="tableSortBy" :sort-desc.sync="tableSortDesc"
-                    :filter="searchText" @filtered="onTableFilter" @sort-changed="onTableSortChanged"
-                    v-on="$listeners" :aria-label="ariaLabel">
+                    :filter="tableFilter" @filtered="onTableFilter" :filter-function="filterFunction"
+                    @sort-changed="onTableSortChanged" v-on="$listeners" :aria-label="ariaLabel">
                     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
@@ -72,11 +76,15 @@ export default {
         },
         pageLength: { type: Boolean, required: false, default: false },
         pageLengthOptions: { type: Array, required: false, default: () => [ 10, 20, 50, 75, 100 ] },
+        pageLengthCols: { type: [String, Number], required: false, default: 3 },
         search: { type: Boolean, required: false, default: false },
-        sortBy: { type: String, required: false, default: '' },
-        sortDesc: { type: Boolean, required: false, default: false },
         searchMinLength: { type: [String, Number], required: false, default: 0 },
         searchDebounce: { type: [String, Number], required: false, default: 150 },
+        searchCols: { type: [String, Number], required: false, default: 3 },
+        filter: { type: String, required: false, default: null },
+        filterFunction: { type: Function, required: false, default: null },
+        sortBy: { type: String, required: false, default: '' },
+        sortDesc: { type: Boolean, required: false, default: false },
         ssp: { type: Boolean, required: false, default: false },
         state: { type: Boolean, required: false, default: false },
         ariaLabel: { type: String, required: false, default: 'Pagination Table' },
@@ -166,7 +174,11 @@ export default {
                 return this.fetchFilteredItems;
             }
             return this.tableData;
-        }
+        },
+
+        tableFilter() {
+            return this.filter || this.searchText;
+        },
     },
 
     watch: {
