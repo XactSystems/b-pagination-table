@@ -249,7 +249,7 @@ export default {
         localRefresh(refresh) {
             if (refresh) {
                 this.refreshTableData();
-                this.$nextTick(function() {
+                this.$nextTick(() => {
                     this.refresh = false;
                 });
             }
@@ -266,7 +266,7 @@ export default {
                 this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
                 this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
                 this.filteredCount = tableState.filteredCount || this.filteredCount;
-                this.$nextTick(function() {
+                this.$nextTick(() => {
                     this.currentPage = tableState.currentPage || this.currentPage;
                     this.setFilteredPagePosition();
                 });
@@ -281,15 +281,17 @@ export default {
 
         saveState() {
             if (this.state) {
-                let tableState = {
-                    tableSortBy: this.tableSortBy,
-                    tableSortDesc: this.tableSortDesc,
-                    rawSearchText: this.rawSearchText,
-                    itemsPerPage: this.itemsPerPage,
-                    filteredCount: this.filteredCount,
-                    currentPage: this.currentPage,
-                };
-                localStorage.setItem(this.stateName, JSON.stringify(tableState));
+                this.$nextTick(() => {
+                    let tableState = {
+                        tableSortBy: this.tableSortBy,
+                        tableSortDesc: this.tableSortDesc,
+                        rawSearchText: this.rawSearchText,
+                        itemsPerPage: this.itemsPerPage,
+                        filteredCount: this.filteredCount,
+                        currentPage: this.currentPage,
+                    };
+                    localStorage.setItem(this.stateName, JSON.stringify(tableState));
+                });
             }
         },
 
