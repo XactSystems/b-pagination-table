@@ -23,7 +23,7 @@
                     :api-url="dataUrl" :per-page="itemsPerPage" :current-page="tableCurrentPage"
                     :sort-by.sync="tableSortBy" :sort-desc.sync="tableSortDesc"
                     :filter="tableFilter" @filtered="onTableFilter" :filter-function="filterFunction"
-                    @sort-changed="onTableSortChanged" v-on="$listeners" :aria-label="ariaLabel">
+                    @sort-changed="onTableSortChanged" @row-selected="onRowSelected" v-on="$listeners" :aria-label="ariaLabel">
                     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
@@ -132,6 +132,7 @@ export default {
             tableSortBy: '',
             tableSortDesc: false,
             localRefresh: false,
+            pageSelectedIndexes: new Map(),
         }
     },
 
@@ -186,6 +187,7 @@ export default {
             handler(items) {
                 this.tableData = items;
                 this.rowCount = this.filteredCount = this.tableData.length;
+                this.pageSelectedIndexes.clear();
             },
             immediate: true
         },
@@ -240,6 +242,7 @@ export default {
                 this.refreshTableData();
             }
             this.saveState();
+            this.restoreSelectedRows();
         },
 
         refresh(refresh) {
@@ -346,6 +349,7 @@ export default {
                     this.displayError(`An error accured fetching the table data from ${context.apiUrl}: ${error.message}`);
                 }
                 finally {
+                    this.pageSelectedIndexes.clear();
                     this.showLoading = false;
                 }
             }
@@ -379,6 +383,29 @@ export default {
             this.filteredCount = (this.ssp ? this.filteredCount : count);
         },
 
+        onRowSelected(rows) {
+            if (!this.ssp) {
+                const selectedIndexes = [];
+                rows.forEach( function find(row) {
+                    // Save ths index of the item in the data list, not the curent page row index
+                    selectedIndexes.push(this.tableData.findIndex((item) => item === row));
+                }, this);
+                this.pageSelectedIndexes.set(this.currentPage, selectedIndexes);
+            }
+        },
+
+        restoreSelectedRows() {
+            if (this.pageSelectedIndexes.has(this.currentPage)) {
+                const selectedIndexes = this.pageSelectedIndexes.get(this.currentPage);
+                this.$nextTick(() => {
+                    selectedIndexes.forEach( function set(index) {
+                        // Offset the index to the current visible rows
+                        this.$refs.table.selectRow(index - (this.firstPageRow - 1));
+                    }, this);
+                });
+            }
+        },
+
         displayError(message) {
             this.$bvModal.msgBoxOk(message, { title: 'Pagination Table' });
         },
@@ -398,8 +425,23 @@ export default {
             this.$refs.table.selectAllRows();
         },
 
+        clearSelected() {
+            this.$refs.table.clearSelected();
+        },
+
         isRowSelected(index) {
             this.$refs.table.isRowSelected(index);
+        },
+
+        getAllSelectedRows() {
+            const items = [];
+            this.pageSelectedIndexes.forEach( function page(indexes) {
+                indexes.forEach( function data(index) {
+                    items.push(this.tableData[index]);
+                }, this);
+            }, this);
+
+            return items;
         },
     }
 }

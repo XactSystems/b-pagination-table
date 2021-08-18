@@ -45,6 +45,8 @@ export default {
 }
 ```
 
+## Multi-page row select
+Internally b-pagination-table tracks the selected rows on each page. As you move from page to page the selected items are retained and redisplayed. The row-selected event is the base b-table event and only returns the selected items on the current page. To retrieve a complete set of selected items call the **getAllSelectedRows** method on the table instance.
 
 ## Component props
 | Prop                    | Type    | Default Value           | Description                                                                                                                                                                       |
@@ -77,6 +79,7 @@ https://bootstrap-vue.org/docs/components/table
 https://bootstrap-vue.org/docs/components/pagination
 
 
+
 ## Slots
 The following slots are available for customisation of the table pagination component.
 |Slot          | Description                                                                                                                                     |
@@ -85,12 +88,25 @@ The following slots are available for customisation of the table pagination comp
 |search        | This slot provides a replacement for the inbuilt search input. The searchDebounce value is passed to the slot.                                  |
 |table-columns | Each table column is provided as a slot as per the b-table documentation. https://bootstrap-vue.org/docs/components/table#scoped-field-slots    |
 
+
 ## Events
 All the events of both b-table and b-pagination are exposed. In addition the following events are emitted:
 |Event         |Payload       |Details                                                          |
 |--------------|--------------|-----------------------------------------------------------------|
 |input:per-page|Number, String| The size of the page length after the dropdown value is changed.|
 |update:items  |Array         | The array of item data fetched from the data-url source.        |
+
+
+## Methods
+All the select methods below are passed on to the underlying b-table component and respect the the select-mode prop.
+|Method                |Details                                                                                                           |
+|----------------------|------------------------------------------------------------------------------------------------------------------|
+|selectRow(index)      | Select a row on the current page with the given **index** number.                                                |
+|unselectRow(index)    | Unselect a row on the current page with the given **index** number.                                              |
+|selectAllRows()       | Select all the rows on the current page.                                                                         |
+|clearSelected()       | Unselect all rows on the current page.                                                                           |
+|isRowSelected(index)  | Returns **true** if the row with the given index is selected on the current page, otherwise it returns **false**.|
+|getAllSelectedRows()  | Return an array of selected objects across all pages.                                                            |
 
 
 ## Server Side Processing
