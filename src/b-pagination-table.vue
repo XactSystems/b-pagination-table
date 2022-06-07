@@ -76,11 +76,11 @@ export default {
         },
         pageLength: { type: Boolean, required: false, default: false },
         pageLengthOptions: { type: Array, required: false, default: () => [ 10, 20, 50, 75, 100 ] },
-        pageLengthCols: { type: [String, Number], required: false, default: 3 },
+        pageLengthCols: { type: [String, Number], required: false, default: 5 },
         search: { type: Boolean, required: false, default: false },
         searchMinLength: { type: [String, Number], required: false, default: 0 },
         searchDebounce: { type: [String, Number], required: false, default: 150 },
-        searchCols: { type: [String, Number], required: false, default: 3 },
+        searchCols: { type: [String, Number], required: false, default: 5 },
         filter: { type: String, required: false, default: null },
         filterFunction: { type: Function, required: false, default: null },
         sortBy: { type: String, required: false, default: '' },
@@ -122,6 +122,7 @@ export default {
     data() {
         return {
             tableData: [],
+            filteredData: [],
             currentPage: 1,
             itemsPerPage: 20,
             rowCount: 0,
@@ -137,10 +138,7 @@ export default {
     },
 
     computed: {
-        firstPageRow() {
-            return this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0;
-        },
-
+        firstPageRow() { return this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0; },
         lastPageRow() {
             return this.filteredCount > 0 ? (
                 this.firstPageRow + (this.itemsPerPage < this.filteredCount ? (
@@ -148,37 +146,19 @@ export default {
                  ) : this.filteredCount) - 1
             ) : 0;
         },
-
-        pageCount() {
-            return Math.ceil(this.filteredCount / this.itemsPerPage);
-        },
-
-        tableCurrentPage() {
-            return (this.ssp ? 1 : this.currentPage);
-        },
-
-        stateName() {
-            return `b-pagination-table_${this._uid }_${window.location.pathname}`;
-        },
-
-        tableId() {
-            return this.id || `b-pagination-table-${this._uid }`;
-        },
-
-        showPagination() {
-            return (this.pagination == 'always' || (this.pagination == true && this.pageCount > 1));
-        },
-
+        pageCount() { return Math.ceil(this.filteredCount / this.itemsPerPage); },
+        tableCurrentPage() { return (this.ssp ? 1 : this.currentPage); },
+        stateName() { return `b-pagination-table_${this._uid }_${window.location.pathname}`; },
+        tableId() { return this.id || `b-pagination-table-${this._uid }`; },
+        showPagination() { return (this.pagination == 'always' || (this.pagination == true && this.pageCount > 1)); },
+        tableFilter() { return this.filter || this.searchText; },
+        filteredTableData() { return (this.filteredData.length > 0 ? this.filteredData : this.tableData); },
         tableItemsOrFunc() {
             // If using SSP we must use the items provider function
             if (this.ssp) {
                 return this.fetchFilteredItems;
             }
             return this.tableData;
-        },
-
-        tableFilter() {
-            return this.filter || this.searchText;
         },
     },
 
@@ -279,7 +259,9 @@ export default {
 
     methods: {
         onTableSortChanged() {
+            this.filteredData = this.$refs.table.sortedItems; // This is not a defined public property but really should be included in the event context
             this.saveState();
+            this.clearSelectedItems();
         },
 
         saveState() {
@@ -346,7 +328,7 @@ export default {
                 }
                 catch (error) {
                     this.tableData = [];
-                    this.displayError(`An error accured fetching the table data from ${context.apiUrl}: ${error.message}`);
+                    this.displayError(`An error occurred fetching the table data from ${context.apiUrl}: ${error.message}`);
                 }
                 finally {
                     this.pageSelectedIndexes.clear();
@@ -379,16 +361,23 @@ export default {
             return url.toString();
         },
 
+        clearSelectedItems() {
+            this.pageSelectedIndexes.clear();
+            this.$refs.table.clearSelected();
+        },
+
         onTableFilter(items, count) {
+            this.filteredData = items;
             this.filteredCount = (this.ssp ? this.filteredCount : count);
+            this.clearSelectedItems();
         },
 
         onRowSelected(rows) {
             if (!this.ssp) {
                 const selectedIndexes = [];
                 rows.forEach( function find(row) {
-                    // Save ths index of the item in the data list, not the curent page row index
-                    selectedIndexes.push(this.tableData.findIndex((item) => item === row));
+                    // Save ths index of the item in the data list, not the current page row index
+                    selectedIndexes.push(this.filteredTableData.findIndex((item) => item === row));
                 }, this);
                 this.pageSelectedIndexes.set(this.currentPage, selectedIndexes);
             }
@@ -437,7 +426,7 @@ export default {
             const items = [];
             this.pageSelectedIndexes.forEach( function page(indexes) {
                 indexes.forEach( function data(index) {
-                    items.push(this.tableData[index]);
+                    items.push(this.filteredTableData[index]);
                 }, this);
             }, this);
 
