@@ -2,19 +2,28 @@
     <b-overlay :show="showLoading" rounded="sm" variant="transparent" blur="1px">
         <b-row v-if="pageLength || search">
             <b-col cols="12" :md="pageLengthCols">
-                <b-form-group v-if="pageLength" label="Page length:" label-cols="5" class="mb-1">
-                    <b-select size="sm" v-model.number="itemsPerPage" :options="pageLengthOptions" />
-                </b-form-group>
+                <b-row>
+                    <slot name="header-left"></slot>
+                    <b-col>
+                        <b-form-group v-if="pageLength" label="Page length:" label-cols="5" class="mb-1">
+                            <b-select size="sm" v-model.number="itemsPerPage" :options="pageLengthOptions" />
+                        </b-form-group>
+                    </b-col>
+                </b-row> 
             </b-col>
             <b-col>
                 <slot name="header"></slot>
             </b-col>
             <b-col cols="12" :md="searchCols">
-                <slot name="search" :search-debounce="searchDebounce">
-                    <b-form-group v-if="search && filterFunction === null" label="Search:" label-cols="3" class="mb-1">
-                        <b-input size="sm" v-model="rawSearchText" :debounce="searchDebounce" />
-                    </b-form-group>
-                </slot>
+                <b-row>
+                    <b-col>
+                        <slot name="search" :search-debounce="searchDebounce">
+                            <b-form-group v-if="search && filterFunction === null" label="Search:" label-cols="3" class="mb-1">
+                                <b-input size="sm" v-model="rawSearchText" :debounce="searchDebounce" />
+                            </b-form-group>
+                        </slot>
+                    </b-col>
+                    <slot name="header-right"></slot>
             </b-col>
         </b-row>
         <b-row>

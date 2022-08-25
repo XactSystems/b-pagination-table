@@ -84,7 +84,9 @@ https://bootstrap-vue.org/docs/components/pagination
 The following slots are available for customisation of the table pagination component.
 |Slot          | Description                                                                                                                                     |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+|header-left   | This slot allows custom elements to be placed to the left of the Page Length input. N.B. Wrap your slot content in a b-col tag and specify cols.|
 |header        | This slot allows custom elements to be placed between the Page Length and Search inputs. N.B. This may change as we review the header elements. |
+|header-right  | This slot allows custom elements to be placed to the right of the Search input. N.B. Wrap your slot content in a b-col tag and specify cols.    |
 |search        | This slot provides a replacement for the inbuilt search input. The searchDebounce value is passed to the slot.                                  |
 |table-columns | Each table column is provided as a slot as per the b-table documentation. https://bootstrap-vue.org/docs/components/table#scoped-field-slots    |
 
