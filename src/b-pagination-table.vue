@@ -24,6 +24,7 @@
                         </slot>
                     </b-col>
                     <slot name="header-right"></slot>
+                </b-row>
             </b-col>
         </b-row>
         <b-row>
@@ -147,15 +148,15 @@ export default {
     },
 
     computed: {
-        firstPageRow() { return this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0; },
+        firstPageRow() { return (this.pagination && this.filteredCount > 0 ? ((this.currentPage - 1) * this.itemsPerPage) + 1 : 0); },
         lastPageRow() {
-            return this.filteredCount > 0 ? (
+            return (this.pagination && this.filteredCount > 0 ? (
                 this.firstPageRow + (this.itemsPerPage < this.filteredCount ? (
                     this.filteredCount - this.firstPageRow > this.itemsPerPage ? this.itemsPerPage : this.filteredCount - this.firstPageRow + 1
                  ) : this.filteredCount) - 1
-            ) : 0;
+            ) : 0);
         },
-        pageCount() { return Math.ceil(this.filteredCount / this.itemsPerPage); },
+        pageCount() { return (this.pagination ? Math.ceil(this.filteredCount / this.itemsPerPage) : 1); },
         tableCurrentPage() { return (this.ssp ? 1 : this.currentPage); },
         stateName() { return `b-pagination-table_${this._uid }_${window.location.pathname}`; },
         tableId() { return this.id || `b-pagination-table-${this._uid }`; },
@@ -183,7 +184,7 @@ export default {
 
         perPage: {
             handler(perPage) {
-                this.itemsPerPage = Number(perPage);
+                this.itemsPerPage = (this.pagination ? Number(perPage) : 0);
             },
             immediate: true
         },
@@ -256,7 +257,7 @@ export default {
                 this.tableSortBy = tableState.tableSortBy || this.tableSortBy;
                 this.tableSortDesc = tableState.tableSortDesc || this.tableSortDesc;
                 this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
-                this.itemsPerPage = tableState.itemsPerPage || this.itemsPerPage;
+                this.itemsPerPage = (this.pagination ? (tableState.itemsPerPage || this.itemsPerPage) : 0);
                 this.filteredCount = tableState.filteredCount || this.filteredCount;
                 this.$nextTick(() => {
                     this.currentPage = tableState.currentPage || this.currentPage;
@@ -307,7 +308,7 @@ export default {
 
         setFilteredPagePosition() {
             // Reset the page number if it's now outside of the possible range
-            if (Math.ceil(this.filteredCount / this.itemsPerPage) < this.currentPage) {
+            if (this.pagination && Math.ceil(this.filteredCount / this.itemsPerPage) < this.currentPage) {
                 this.currentPage = (this.filteredCount > 0 ? Math.ceil(this.filteredCount / this.itemsPerPage) : 1);
             }
             this.saveState();
