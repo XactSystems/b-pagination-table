@@ -31,10 +31,11 @@
             <b-col>
                 <b-table ref="table" v-bind="$attrs" :items="tableItemsOrFunc" :id="tableId"
                     :api-url="dataUrl" :per-page="itemsPerPage" :current-page="tableCurrentPage"
-                    :sort-by.sync="tableSortBy" :sort-desc.sync="tableSortDesc"
-                    :filter="tableFilter" @filtered="onTableFilter" :filter-function="filterFunction"
-                    @sort-changed="onTableSortChanged" @row-selected="onRowSelected" v-on="$listeners" :aria-label="ariaLabel">
-                    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+                    v-model:sort-by="tableSortBy" v-model:sort-desc="tableSortDesc"
+                    :filter="tableFilter" :filter-function="filterFunction"
+                    @filtered="onTableFilter" @sort-changed="onTableSortChanged" @row-selected="onRowSelected"
+                    :aria-label="ariaLabel">
+                    <template v-for="(index, name) in $slots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
                 </b-table>
@@ -47,7 +48,7 @@
             </b-col>
             <b-col cols="6" class="mt-0">
                 <div class="float-right">
-                    <b-pagination v-if="showPagination" ref="pagination" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage" v-on="$listeners"
+                    <b-pagination v-if="showPagination" ref="pagination" v-model="currentPage" :total-rows="filteredCount" :per-page="itemsPerPage"
                         :limit="limit" :align="align" :pills="pills" :hide-goto-end-buttons="hideGotoEndButtons"
                         :label-first-page="labelFirstPage" :first-text="firstText" :first-number="firstNumber" :first-class="firstClass"
                         :label-prev-page="labelPrevPage" :prev-text="prevText" :prev-class="prevClass"
@@ -57,7 +58,7 @@
                         :hide-ellipsis="hideEllipsis" :ellipsis-text="ellipsisText" :ellipsis-class="ellipsisClass"
                         :size="paginationSize" :aria-label="paginationAriaLabel" :aria-controls="tableId"
                         class="mx-1">
-                        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+                        <template v-for="(index, name) in $slots" v-slot:[name]="data">
                             <slot :name="name" v-bind="data"></slot>
                         </template>
                     </b-pagination>
@@ -70,7 +71,13 @@
 <script>
 
 import axios from 'axios';
-import Url from 'url-parse';
+
+const EVENT_UPDATE_PER_PAGE = 'update:per-page';
+const EVENT_UPDATE_REFRESH = 'update:refresh';
+const UPDATE_ITEMS = 'update:items';
+const EVENT_ROW_SELECTED = 'row-selected';
+const EVENT_FILTERED = 'filtered';
+const EVENT_SORT_CHANGED = 'sort-changed';
 
 export default {
 
@@ -127,6 +134,9 @@ export default {
         paginationAriaLabel: { type: String, required: false, default: 'Pagination' },
         // Table refresh when using the dataUrl with or without SSP
         refresh: { type: Boolean, required: false, default: false },
+        // Events consumed in this component that we need to bubble upwards.
+        rowSelected: { type: Function, required: false, default: null },
+
     },
 
     data() {
@@ -223,7 +233,7 @@ export default {
         },
 
         itemsPerPage(itemsPerPage) {
-            this.$emit('update:per-page', itemsPerPage);
+            this.$emit(EVENT_UPDATE_PER_PAGE, itemsPerPage);
             this.setFilteredPagePosition();
         },
 
@@ -246,7 +256,7 @@ export default {
                     this.refresh = false;
                 });
             }
-            this.$emit('update:refresh', this.localRefresh);
+            this.$emit(EVENT_UPDATE_REFRESH, this.localRefresh);
         },
     },
 
@@ -268,10 +278,11 @@ export default {
     },
 
     methods: {
-        onTableSortChanged() {
+        onTableSortChanged(context) {
             this.filteredData = this.$refs.table.sortedItems; // This is not a defined public property but really should be included in the event context
             this.saveState();
             this.clearSelectedItems();
+            this.$emit(EVENT_SORT_CHANGED, context); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         saveState() {
@@ -334,7 +345,7 @@ export default {
                         this.rowCount = this.filteredCount = this.tableData.length;
                     }
 
-                    this.$emit('update:items', this.tableData);
+                    this.$emit(UPDATE_ITEMS, this.tableData);
                 }
                 catch (error) {
                     this.tableData = [];
@@ -353,21 +364,19 @@ export default {
             if (!this.ssp) {
                 return context.apiUrl;
             }
-            let url = new Url(context.apiUrl, {}, true);
-            let query = url.query;
+            let url = new URL(context.apiUrl, window.location.href);
+            let query = url.searchParams;
             // Global search filter
             if (context.filter) {
-                 query.filter = context.filter;
+                query.set('filter', context.filter);
             }
             // Sorting
             if (context.sortBy) {
-                query.orderBy = (context.sortDesc ? '-' : '' ) + context.sortBy;
+                query.set('orderBy', (context.sortDesc ? '-' : '' ) + context.sortBy);
             }
             // Pagination
-            query.pageStart = (this.firstPageRow > 0 ? this.firstPageRow - 1 : 0);
-            query.pageLength = context.perPage;
-
-            url.set('query', query);
+            query.set('pageStart', this.firstPageRow > 0 ? this.firstPageRow - 1 : 0);
+            query.set('pageLength', context.perPage);
             return url.toString();
         },
 
@@ -380,6 +389,7 @@ export default {
             this.filteredData = items;
             this.filteredCount = (this.ssp ? this.filteredCount : count);
             this.clearSelectedItems();
+            this.$emit(EVENT_FILTERED, items, count); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         onRowSelected(rows) {
@@ -391,6 +401,7 @@ export default {
                 }, this);
                 this.pageSelectedIndexes.set(this.currentPage, selectedIndexes);
             }
+            this.$emit(EVENT_ROW_SELECTED, rows); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         restoreSelectedRows() {
