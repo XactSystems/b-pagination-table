@@ -29,12 +29,12 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-table ref="table" v-bind="$attrs" :items="tableItemsOrFunc" :id="tableId"
+                <b-table ref="table" :items="tableItemsOrFunc" :id="tableId"
                     :api-url="dataUrl" :per-page="itemsPerPage" :current-page="tableCurrentPage"
                     v-model:sort-by="tableSortBy" v-model:sort-desc="tableSortDesc"
                     :filter="tableFilter" :filter-function="filterFunction"
                     @filtered="onTableFilter" @sort-changed="onTableSortChanged" @row-selected="onRowSelected"
-                    :aria-label="ariaLabel">
+                    :aria-label="ariaLabel" v-bind="$attrs">
                     <template v-for="(index, name) in $slots" v-slot:[name]="data">
                         <slot :name="name" v-bind="data"></slot>
                     </template>
@@ -80,7 +80,14 @@ const EVENT_FILTERED = 'filtered';
 const EVENT_SORT_CHANGED = 'sort-changed';
 
 export default {
-
+    /**
+     * @vue/compat migration build causes headaches as far as fallthrough event handling and $attrs is concerned.
+     * Adding the INSTANCE_LISTENERS: false flag for components that no longer use $listeners resolves this.
+     * See https://github.com/vuejs/core/issues/4566#issuecomment-917997056
+     */
+    compatConfig: {
+        INSTANCE_LISTENERS: false,
+    },
     inheritAttrs: false,
     
     props: {
@@ -136,7 +143,6 @@ export default {
         refresh: { type: Boolean, required: false, default: false },
         // Events consumed in this component that we need to bubble upwards.
         rowSelected: { type: Function, required: false, default: null },
-
     },
 
     data() {
@@ -282,7 +288,6 @@ export default {
             this.filteredData = this.$refs.table.sortedItems; // This is not a defined public property but really should be included in the event context
             this.saveState();
             this.clearSelectedItems();
-            this.$emit(EVENT_SORT_CHANGED, context); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         saveState() {
@@ -389,7 +394,6 @@ export default {
             this.filteredData = items;
             this.filteredCount = (this.ssp ? this.filteredCount : count);
             this.clearSelectedItems();
-            this.$emit(EVENT_FILTERED, items, count); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         onRowSelected(rows) {
@@ -401,7 +405,6 @@ export default {
                 }, this);
                 this.pageSelectedIndexes.set(this.currentPage, selectedIndexes);
             }
-            this.$emit(EVENT_ROW_SELECTED, rows); // TODO: There may be a bug as this event should get emitted. See https://vuejs.org/guide/components/attrs#v-on-listener-inheritance
         },
 
         restoreSelectedRows() {
