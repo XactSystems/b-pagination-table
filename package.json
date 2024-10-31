@@ -5,7 +5,8 @@
   "description": "A pagination table for BootstrapVueNext with AJAX fetch and server side pagination options.",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "src/"
   ],
   "main": "dist/b-pagination-table.umd.js",
   "module": "dist/b-pagination-table.es.js",

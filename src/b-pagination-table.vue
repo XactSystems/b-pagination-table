@@ -107,6 +107,7 @@
 
 <script>
 
+import { BOverlay, BRow, BCol, BPagination, BTable, BFormGroup, BInput, BFormSelect } from 'bootstrap-vue-next';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
@@ -115,6 +116,10 @@ const EVENT_UPDATE_REFRESH = 'update:refresh';
 const UPDATE_ITEMS = 'update:items';
 
 export default {
+    components: {
+        BOverlay, BRow, BCol, BPagination, BTable, BFormGroup, BInput, BFormSelect
+    },
+
     inheritAttrs: false,
 
     props: {
@@ -332,7 +337,7 @@ export default {
 
         // Fetch the unfiltered table data from the server or call refresh
         refreshTableData() {
-            if (this.$refs.table) {
+            if (this.$refs?.table) {
                 this.$refs.table.refresh();
             }
         },
