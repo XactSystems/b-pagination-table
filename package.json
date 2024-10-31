@@ -1,24 +1,13 @@
 {
   "name": "@xactsystems/b-pagination-table",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
-  "description": "A pagination table for BootstrapVueNext with AJAX fetch and server side pagination options.",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
+  "description": "A pagination table for BootstrapVue with AJAX fetch and server side pagination options.",
   "main": "dist/b-pagination-table.umd.js",
-  "module": "dist/b-pagination-table.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/b-pagination-table.es.js",
-      "require": "./dist/b-pagination-table.umd.js"
-    }
-  },
   "main-dev": "src/index.js",
   "keywords": [
     "bootstrap",
-    "bootstrap-vue-next",
+    "bootstrap-vue",
     "vue",
     "component",
     "table",
@@ -37,24 +26,24 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "lint": "eslint --fix src",
-    "dev": "vite",
-    "build": "vite build"
+    "serve": "vue-cli-service serve src/b-pagination-table.vue",
+    "build": "vue-cli-service build --target lib --name b-pagination-table 'src/index.js'",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^1.6.8"
-  },
-  "peerDependencies": {
-    "bootstrap-vue-next": "^0.24.21",
-    "vue": "^3.5.8"
+    "@vue/compat": "^3.4.0",
+    "axios": "^1.6.8",
+    "bootstrap-vue": "^2.23.0",
+    "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@vitejs/plugin-vue": "^5.1.4",
-    "@vue/compiler-sfc": "^3.5.10",
-    "eslint": "^9.11.1",
-    "eslint-plugin-vue": "^9.28.0",
-    "vite": "^5.4.8",
-    "vite-plugin-eslint": "^1.8.1"
+    "@babel/eslint-parser": "^7.24.1",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.25.0"
+  },
+  "engines": {
+    "node": "*"
   }
 }
