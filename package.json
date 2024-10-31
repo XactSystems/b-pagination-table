@@ -1,13 +1,24 @@
 {
   "name": "@xactsystems/b-pagination-table",
-  "version": "1.0.27",
+  "version": "3.0.0",
   "license": "MIT",
-  "description": "A pagination table for BootstrapVue with AJAX fetch and server side pagination options.",
+  "description": "A pagination table for BootstrapVueNext with AJAX fetch and server side pagination options.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
   "main": "dist/b-pagination-table.umd.js",
+  "module": "dist/b-pagination-table.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/b-pagination-table.es.js",
+      "require": "./dist/b-pagination-table.umd.js"
+    }
+  },
   "main-dev": "src/index.js",
   "keywords": [
     "bootstrap",
-    "bootstrap-vue",
+    "bootstrap-vue-next",
     "vue",
     "component",
     "table",
@@ -26,43 +37,24 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "serve": "vue-cli-service serve src/b-pagination-table.vue",
-    "build": "vue-cli-service build --target lib --name b-pagination-table 'src/index.js'",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint --fix src",
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
-    "axios": ">=0.18.0 < 1.0.0",
-    "bootstrap-vue": "^2.8.0",
-    "url-parse": "^1.4.7",
-    "vue": "^2.6.11"
+    "axios": "^1.6.8"
+  },
+  "peerDependencies": {
+    "bootstrap-vue-next": "^0.24.21",
+    "vue": "^3.5.8"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "core-js": "^3.6.5",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 5 versions",
-    "not dead"
-  ]
+    "@eslint/js": "^9.11.1",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/compiler-sfc": "^3.5.10",
+    "eslint": "^9.11.1",
+    "eslint-plugin-vue": "^9.28.0",
+    "vite": "^5.4.8",
+    "vite-plugin-eslint": "^1.8.1"
+  }
 }
