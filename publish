@@ -3,4 +3,4 @@
 
 npm run build
 
-np --no-tests --branch=v2.0
+np --no-tests --branch=v3.0
