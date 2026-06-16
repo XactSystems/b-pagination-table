@@ -2,12 +2,20 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import vue from '@vitejs/plugin-vue';
+import Components from 'unplugin-vue-components/vite'
+import {BootstrapVueNextResolver} from 'bootstrap-vue-next/resolvers'
 import eslintPlugin from 'vite-plugin-eslint';
 
 /* global __dirname:readonly */
 
 export default defineConfig({
-    plugins: [vue(), eslintPlugin()],
+    plugins: [
+        vue(),
+        Components({
+            resolvers: [BootstrapVueNextResolver()],
+        }),
+        eslintPlugin()
+    ],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.js'),

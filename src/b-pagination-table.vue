@@ -32,16 +32,16 @@
                 <BTable
                     :id="tableId" ref="table"
                     v-model:sort-by="tableSortBy"
+                    v-bind="$attrs"
                     :provider="tableProvider"
                     :no-provider-filtering="!ssp"
                     :no-provider-paging="!ssp"
                     :no-provider-sorting="!ssp"
                     :per-page="itemsPerPage"
-                    :current-page="tableCurrentPage"
+                    :current-page="currentPage"
                     :filter="tableFilter"
                     :filter-function="filterFunction"
                     :aria-label="ariaLabel"
-                    v-bind="$attrs"
                     @filtered="onTableFilter"
                     @sorted="onTableSorted"
                     @row-selected="onRowSelected"
@@ -67,7 +67,8 @@
                         v-if="showPagination" ref="pagination"
                         v-model="currentPage"
                         :total-rows="filteredCount"
-                        :per-page="itemsPerPage" :limit="limit"
+                        :per-page="itemsPerPage"
+                        :limit="limit"
                         :align="align"
                         :pills="pills"
                         :hide-goto-end-buttons="hideGotoEndButtons"
@@ -107,7 +108,6 @@
 
 <script>
 
-import { BOverlay, BRow, BCol, BPagination, BTable, BFormGroup, BInput, BFormSelect } from 'bootstrap-vue-next';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
@@ -116,10 +116,6 @@ const EVENT_UPDATE_REFRESH = 'update:refresh';
 const UPDATE_ITEMS = 'update:items';
 
 export default {
-    components: {
-        BOverlay, BRow, BCol, BPagination, BTable, BFormGroup, BInput, BFormSelect
-    },
-
     inheritAttrs: false,
 
     props: {
@@ -211,7 +207,6 @@ export default {
             return lastPageRow;
         },
         pageCount() { return (this.pagination ? Math.ceil(this.filteredCount / this.itemsPerPage) : 1); },
-        tableCurrentPage() { return (this.ssp ? 1 : this.currentPage); },
         stateName() { return `BPagination-table_${this.uniqueId}_${window.location.pathname}`; },
         tableId() { return this.id || `BPagination-table-${this.uniqueId}`; },
         showPagination() { return (this.pagination === 'always' || (this.pagination === true && this.pageCount > 1)); },
@@ -337,7 +332,7 @@ export default {
 
         // Fetch the unfiltered table data from the server or call refresh
         refreshTableData() {
-            if (this.$refs?.table) {
+            if (this && this.$refs?.table) {
                 this.$refs.table.refresh();
             }
         },
