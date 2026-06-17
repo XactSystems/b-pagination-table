@@ -1,10 +1,13 @@
+import packageConfig from '../package.json';
+
+const ComponentName = 'BPaginationTable';
 const BPaginationTableResolver = () => {
   const resolvers = [
     {
       type: 'component',
       resolve: (name) => {
-        if (name === 'BPaginationTable') {
-          return { name: 'default', from: '@xactsystems/b-pagination-table' };
+        if (name === ComponentName) {
+          return { name: ComponentName, from: packageConfig.name };
         }
       }
     }
