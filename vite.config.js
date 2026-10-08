@@ -1,12 +1,9 @@
 // vite.config.js
-import { resolve } from "path";
 import { defineConfig } from "vite";
 import vue from '@vitejs/plugin-vue';
 import Components from 'unplugin-vue-components/vite'
 import {BootstrapVueNextResolver} from 'bootstrap-vue-next/resolvers'
 import eslintPlugin from 'vite-plugin-eslint';
-
-/* global __dirname:readonly */
 
 export default defineConfig({
     plugins: [
@@ -18,9 +15,8 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.js'),
-            name: 'BPaginationTable',
-            fileName: (format) => `b-pagination-table.${format}.js`
+            entry: 'src/index.js',
+            name: '@xactsystems/b-pagination-table',
         },
         rollupOptions: {
             // Make sure to externalise deps that shouldn't be bundled into the library.

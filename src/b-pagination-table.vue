@@ -107,9 +107,9 @@
 </template>
 
 <script>
+/* xx-global window, localStorage, URL */
 
 import axios from 'axios';
-import { isArray } from 'lodash';
 
 const EVENT_UPDATE_PER_PAGE = 'update:per-page';
 const EVENT_UPDATE_REFRESH = 'update:refresh';
@@ -295,7 +295,7 @@ export default {
         if (this.state && localStorage.getItem(this.stateName)) {
             const tableState = JSON.parse(localStorage.getItem(this.stateName));
             if (tableState) {
-                this.tableSortBy = isArray(tableState.tableSortBy) ? tableState.tableSortBy : this.tableSortBy;
+                this.tableSortBy = Array.isArray(tableState.tableSortBy) ? tableState.tableSortBy : this.tableSortBy;
                 this.rawSearchText = tableState.rawSearchText || this.rawSearchText;
                 this.itemsPerPage = (this.pagination ? (tableState.itemsPerPage || this.itemsPerPage) : 0);
                 this.filteredCount = tableState.filteredCount || this.filteredCount;
