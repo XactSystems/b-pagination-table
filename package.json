@@ -32,7 +32,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/XactSystems/b-pagination-table"
+    "url": "git+https://github.com/XactSystems/b-pagination-table.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
