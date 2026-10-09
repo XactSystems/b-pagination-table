@@ -8,8 +8,8 @@
     "dist",
     "src/"
   ],
-  "main": "dist/b-pagination-table.umd.js",
-  "module": "dist/b-pagination-table.es.js",
+  "main": "dist/b-pagination-table.umd.cjs",
+  "module": "dist/b-pagination-table.js",
   "exports": {
     ".": {
       "import": "./dist/b-pagination-table.js",
